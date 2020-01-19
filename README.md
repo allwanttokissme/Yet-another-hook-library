@@ -17,19 +17,19 @@ no dependencies
 
 ```cpp
 int _declspec(noinline) sum(int a, int b) {
-	return a + b;
+    return a + b;
 }
 
 void hooked_sum(int& a, int& b) {
-	a = 10;
-	b = 20;
+    a = 10;
+    b = 20;
 }
 
 int main() {
-	hook test(sum, hooked_sum);
-	std::cout << sum(1, 2);
+    hook test(sum, hooked_sum);
+    std::cout << sum(1, 2);
 
-	return 0;
+    return 0;
 }
 ```
 ```
@@ -40,21 +40,21 @@ Output:
 ### Ignore original function
 ```cpp
 int _declspec(noinline) sum(int a, int b) {
-	return a + b;
+    return a + b;
 }
 
 int hooked_sum(int& a, int& b) {
 	
-	//If hook function have "void" return type, original function will be called
-	//Otherwise no	
-	return 42;
+    //If hook function have "void" return type, original function will be called
+    //Otherwise no	
+    return 42;
 }
 
 int main() {
-	hook test(sum, hooked_sum);
-	std::cout << sum(1, 2);
+    hook test(sum, hooked_sum);
+    std::cout << sum(1, 2);
 
-	return 0;
+    return 0;
 }
 ```
 ```
@@ -66,20 +66,19 @@ Output:
 ### Work well with compound types
 ```cpp
 void _declspec(noinline) print(std::string message, int number) {
-	std::cout << message << " and number " << number;
+    std::cout << message << " and number " << number;
 }
 
 void hooked_print(std::string& message, int& number) {
-	message += "_hooked";
-	number = 1337;
+    message += "_hooked";
+    number = 1337;
 }
 
 int main() {
-	hook test(print, hooked_print);
-	
-	print("hello_world", 640);
-
-	return 0;
+    hook test(print, hooked_print);
+    print("hello_world", 640);
+    
+    return 0;
 }
 ```
 ```
@@ -91,29 +90,29 @@ hello_world_hooked and number 1337
 ### Member function support
 ```cpp
 struct dummy {
-	void func(bool a) {
-		std::cout << foo << " " << bar << " " << a;
-	}
+    void func(bool a) {
+        std::cout << foo << " " << bar << " " << a;
+    }
 	
-	std::string foo;
-	int bar;
+    std::string foo;
+    int bar;
 };
 
 void hooked_dummy_func(dummy*& obj, bool& a) {
-	obj->foo = "example hooked text";
-	a = false;
+    obj->foo = "example hooked text";
+    a = false;
 }
 
 int main() {
-	hook test(&dummy::func, hooked_dummy_func);
+    hook test(&dummy::func, hooked_dummy_func);
 	
-	dummy tmp;
-	tmp.foo = "Hello, world!!!";
-	tmp.bar = 101010101;
+    dummy tmp;
+    tmp.foo = "Hello, world!!!";
+    tmp.bar = 101010101;
 	
-	tmp.func(true);
+    tmp.func(true);
 	
-	return 0;
+    return 0;
 }
 ```
 ```
