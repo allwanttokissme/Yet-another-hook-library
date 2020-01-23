@@ -358,6 +358,7 @@ private:
 		memory_protect::unprotect_guard guard(hookee_address, 5);
 
 		constexpr unsigned char JMP_REL32_BYTECODE = 0xE9;
+		constexpr unsigned char NOP_BYTECODE = 0x90;
 		std::array<uint8_t, JUMP_OPCODE_SIZE> jump_opcode;
 		
 		jump_opcode[0] = JMP_REL32_BYTECODE;
@@ -368,6 +369,11 @@ private:
 
 		std::copy(jump_opcode.begin(), jump_opcode.end(),
 			force_cast<uint8_t*>(hookee_address));
+			
+		if (original_instructions.size() > JUMP_OPCODE_SIZE) {
+			std::fill(force_cast<uint8_t*>(hookee_address) + JUMP_OPCODE_SIZE,
+				force_cast<uint8_t*>(hookee_address) + original_instructions.size(), NOP_BYTECODE);
+		}
 	}
 
 	void restore_original_instructions() {
