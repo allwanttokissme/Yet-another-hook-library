@@ -284,6 +284,10 @@ public:
 
 private:
 	static void constexpr assert_check_function_types() {
+		static_assert(get_calling_convention_v<HookeeType> != cc::unknown_ ||
+					  get_calling_convention_v<HookType> != cc::unknown_,
+			"Unknown calling convention");
+		
 		if constexpr (get_calling_convention_v<HookeeType> == cc::thiscall_) {
 			static_assert(detail::is_same_custom_v<remove_func_pointer_t<HookType>,
 				add_reference_to_args_t<
