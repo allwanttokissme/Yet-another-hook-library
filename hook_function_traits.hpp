@@ -266,8 +266,8 @@ struct params_size_as_array<Ret(__stdcall)(Args...)> {
 	static constexpr auto value = detail::get_size_as_array<Args...>();
 };
 
-template<typename Ret, typename... Args>
-struct params_size_as_array<Ret(__thiscall*)(Args...)> {
+template<typename Ret, typename Class, typename... Args>
+struct params_size_as_array<Ret(__thiscall*)(Class, Args...)> {
 	static constexpr auto value = detail::get_size_as_array<Args...>();
 };
 
